@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+*::after{box-sizing:border-box;}
+*::before{box-sizing:border-box;}
+ul,ol{list-style: none;}
+#list{
+    max-width:980px;
+    margin:0 auto;
+    display:flex;
+    justify-content:space-between;
+    flex-flow:wrap;
+}
+#list>li{
+    width:calc(33.33% - 10px);
+}
+#list>li .oneToOne{
+position: relative;
+padding-top: 100%;
+background: #eee;
+}
+#list>li img{
+    position: absolute;
+    width:100%;
+    height: auto;
+    left: 0;
+    top:0;
+}
+#list p{
+
+}
+.loadMore{
+    text-align: center;margin: 16px 0;
+}
+.btn {
+  background: #3498db;
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  border-radius: 28px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #3cb0fd;
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+}
+
+</style>
+</head>
+<body>
+<ol id="list">
+
+</ol>
+<div id="loadMoreButton" class="loadMore">
+    <button class="btn">加载更多 </button>
+</div>
+<script>
+    window.onload = function(){
+        let list = document.getElementById('list')
+        for(var i=0;i<9;i++ ){
+            let li = document.createElement('li')
+            let div = document.createElement('div');
+            div.className = 'oneToOne'
+            let img = document.createElement('img')
+            img.src = 'https://via.placeholder.com/200x200?text=' + Math.random().toFixed(6)
+            let p = document.createElement('p')
+            p.textContent = `这是第${i+1}段话`
+            div.appendChild(img)
+            li.appendChild(div)
+            li.appendChild(p)
+            list.appendChild(li)
+        }
+
+        let n = 1
+
+        loadMoreButton.onclick = function(){
+            let req = new XMLHttpRequest()
+            req.open('GET',`./page-${n+1}.json`)
+            req.onload = function(){
+                n += 1
+                let res = req.responseText
+                let data = window.JSON.parse(res)
+                for(let i = 0;i<data.content.length;i++){
+                    let li = `
+                        <li>
+                            <div class=oneToOne
+                                <img src="${data.content[i].url}">
+                            </div>
+                            <p>${data.content[i].text}</P>
+                        </li>
+                    `
+                list.insertAdjacentHTML('beforeend',li)
+                }
+                if(data.content.hasNextPage === false){
+                    loadMoreButton.disabled =true
+                }
+            }
+            req.send()
+        }
+    }
+
+</script>
+</body>
+</html>
