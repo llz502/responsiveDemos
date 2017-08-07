@@ -33,7 +33,6 @@ background: #eee;
     top:0;
 }
 #list p{
-
 }
 .loadMore{
     text-align: center;
@@ -50,13 +49,11 @@ background: #eee;
   padding: 10px 20px 10px 20px;
   text-decoration: none;
 }
-
 .btn:hover {
   background: #3cb0fd;
   background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
   text-decoration: none;
 }
-
 </style>
 </head>
 <body>
@@ -82,9 +79,7 @@ background: #eee;
             li.appendChild(p)
             list.appendChild(li)
         }
-
         let n = 1
-
         var loadMore = function(){
             let req = new XMLHttpRequest()
             req.open('GET',`./page-${n+1}.json`)
@@ -109,15 +104,12 @@ background: #eee;
             }
             req.send()
         }
-
         loadMoreButton.onclick = loadMore()
-
         window.onscroll = function(){
             var doc = document.documentElement
             var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0)
             var clientHeight = doc.clientHeight
             var viewportOffset = loadMoreButton.getBoundingClientRect()
-
             var buttonTop = viewportOffset.top
             console.log(clientHeight,buttonTop)
             if(buttonTop > clientHeight - 100){
