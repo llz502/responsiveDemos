@@ -34,12 +34,11 @@ background: #eee;
     top:0;
 }
 #list p{
-
 }
 .loadMore{
     text-align: center;
     margin-top: 16px;
-    margin-bottom:20px;
+    margin-bottom:30px;
 }
 .btn {
   background: #3498db;
@@ -51,13 +50,11 @@ background: #eee;
   padding: 10px 20px 10px 20px;
   text-decoration: none;
 }
-
 .btn:hover {
   background: #3cb0fd;
   background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
   text-decoration: none;
 }
-
 </style>
 </head>
 <body>
@@ -92,6 +89,7 @@ background: #eee;
             list.insertAdjacentHTML('beforeend',preLi)
 
         }
+<<<<<<< HEAD
         
         var IsScrollToBottom = function(element){
             
@@ -110,6 +108,9 @@ background: #eee;
 
         }
                     
+=======
+        let n = 1
+>>>>>>> 2eae94674575c77d2b990644ac1239febc73a094
         var loadMore = function(){
             if(loading === false){false}
             if(hasNextPage === false){return;}
@@ -141,6 +142,7 @@ background: #eee;
             loading = true
             req.send()
         }
+<<<<<<< HEAD
         var scrollAutoLoading = function(){
             //自动加载
             if(IsScrollToBottom(loadMoreButton)){
@@ -159,6 +161,22 @@ background: #eee;
         loadMoreButton.onclick = loadMore
         window.onscroll = scrollAutoLoading
 
+=======
+        loadMoreButton.onclick = loadMore()
+        window.onscroll = function(){
+            var doc = document.documentElement
+            var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0)
+            var clientHeight = doc.clientHeight
+            var viewportOffset = loadMoreButton.getBoundingClientRect()
+            var buttonTop = viewportOffset.top
+            console.log(clientHeight,buttonTop)
+            if(buttonTop > clientHeight - 100){
+            }else{
+                loadMore()
+            }
+          }
+    
+>>>>>>> 2eae94674575c77d2b990644ac1239febc73a094
     }
 </script>
 </body>
