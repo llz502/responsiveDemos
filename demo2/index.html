@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 *::after{box-sizing:border-box;}
@@ -67,65 +68,97 @@ background: #eee;
     <button class="btn">加载更多 </button>
 </div>
 <script>
+    //预加载
+    var loadingImg = new Image()
+    loadingImg.src = 'https://i.loli.net/2017/08/08/5989b89bdc8c4.gif'
+
     window.onload = function(){
-        let list = document.getElementById('list')
-        for(var i=0;i<9;i++ ){
-            let li = document.createElement('li')
-            let div = document.createElement('div');
-            div.className = 'oneToOne'
-            let img = document.createElement('img')
-            img.src = 'https://via.placeholder.com/200x200?text=' + Math.random().toFixed(6)
-            let p = document.createElement('p')
-            p.textContent = `这是第${i+1}段话`
-            div.appendChild(img)
-            li.appendChild(div)
-            li.appendChild(p)
-            list.appendChild(li)
-        }
-
+        let hasNextPage = true
         let n = 1
+        let loading = false
+        let list = document.getElementById('list')
+        let loadingButton = document.querySelector('#loadMoreButton>.btn')
 
+        for(var i=0;i<9;i++ ){
+            let preLi = `
+                        <li>
+                            <div class=oneToOne>
+                                <img class="dataSrc" 
+                                src="//via.placeholder.com/200x200?text= + ${Math.random().toFixed(6)}">
+                            </div>
+                            <p>这是第${i+1}段话</P>
+                        </li>
+                    `
+            list.insertAdjacentHTML('beforeend',preLi)
+
+        }
+        
+        var IsScrollToBottom = function(element){
+            
+            var doc = document.documentElement
+            var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0)
+            var clientHeight = doc.clientHeight
+
+            var viewportOffset = element.getBoundingClientRect()
+            var buttonTop = viewportOffset.top
+            // console.log(clientHeight,buttonTop)
+            if(buttonTop < clientHeight){
+                return true;
+            }else {
+                return false;
+            }
+
+        }
+                    
         var loadMore = function(){
+            if(loading === false){false}
+            if(hasNextPage === false){return;}
             let req = new XMLHttpRequest()
-            req.open('GET',`./page-${n+1}.json`)
+            req.open('GET',`page-${n+1}.json`)
+            req.onerror = function(){ loading = false }
             req.onload = function(){
+                loading = false
                 n += 1
                 let res = req.responseText
                 let data = window.JSON.parse(res)
                 for(let i = 0;i<data.content.length;i++){
                     let li = `
                         <li>
-                            <div class=oneToOne
-                                <img src="${data.content[i].url}">
+                            <div class=oneToOne>
+                                <img class="dataSrc" src="https://i.loli.net/2017/08/08/5989b89bdc8c4.gif" data-src="${data.content[i].url}">
                             </div>
                             <p>${data.content[i].text}</P>
                         </li>
                     `
                 list.insertAdjacentHTML('beforeend',li)
                 }
-                if(data.content.hasNextPage === false){
-                    loadMoreButton.disabled =true
+                if(data.hasNextPage === false){
+                    hasNextPage = false
+                    // loadMoreButton.disabled = true
+                    loadMoreButton.textContent = "暂无数据......"
                 }
             }
+            loading = true
             req.send()
         }
-
-        loadMoreButton.onclick = loadMore()
-
-        window.onscroll = function(){
-            var doc = document.documentElement
-            var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0)
-            var clientHeight = doc.clientHeight
-            var viewportOffset = loadMoreButton.getBoundingClientRect()
-
-            var buttonTop = viewportOffset.top
-            console.log(clientHeight,buttonTop)
-            if(buttonTop > clientHeight - 100){
-            }else{
-                loadMore()
+        var scrollAutoLoading = function(){
+            //自动加载
+            if(IsScrollToBottom(loadMoreButton)){
+                if(hasNextPage){loadMore() }
             }
-          }
-    
+            //懒加载图片
+            let images = document.querySelectorAll('img[data-src]')
+            for(let i=0;i<images.length;i++){
+                if(IsScrollToBottom(images[i])){
+                    images[i].src = images[i].getAttribute('data-src')
+                    images[i].removeAttribute('data-src')
+                }
+            }
+        }
+
+        loadMoreButton.onclick = loadMore
+        window.onscroll = scrollAutoLoading
+
     }
 </script>
 </body>
