@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    #pager>a {
+        border: 1px solid red;
+        padding: 0 1em;
+    }
+
+    #pager>span {
+        border: 1px solid red;
+        padding: 0 1em;
+        background: #DDD;
+    }
+    </style>
+</head>
+
+<body>
+    {{pageNumbers}}
+    <input name="pageCount" type="hidden" value='{{pageCount}}'>
+    <input name="page" type="hidden" value='{{page}}'>
+
+    <div id="pager">
+    </div>
+    <script>
+    let pageCount = document.querySelector('[name="pageCount"]').value
+    let page = document.querySelector('[name="page"]').value
+    pageCount = +pageCount // 把 pageCount 变成数字
+    page = +page
+    for (let i = 0; i < pageCount; i++) {
+        let tag
+        if (i + 1 === page) {
+            tag = document.createElement('span')
+        } else {
+            tag = document.createElement('a')
+            tag.href = `?page=${i+1}`
+        }
+        tag.textContent = i + 1
+        pager.appendChild(tag)
+    }
+    </script>
+</body>
+
+</html>
