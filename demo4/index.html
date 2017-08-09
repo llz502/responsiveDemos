@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    .searchContainer {
+        padding: 5px;
+        padding-left: 50px;
+    }
+
+    .searchContainer input {
+        font-size: 24px;
+    }
+
+    .searchResultWrapper {
+
+        margin: 10px 50px;
+    }
+
+    .searchResult {
+        background: #eee;
+        border: 1px solid #fff;
+        margin-bottom: 2px;
+        padding-left: 10px;
+    }
+
+    .searchResult>h4 {
+        padding-left: 1px;
+        padding-right: 100px;
+        width: 20%;
+        background: #fff;
+    }
+
+    #pager ul {
+        display: flex;
+        list-style: none;
+    }
+
+    #pager li {
+        margin-right: 10px;
+    }
+
+    #pager li>input {
+        padding: 2px 5px;
+        font-size: 13px;
+        line-height: 17px;
+    }
+
+    #pager li>.active {
+        border: 1px solid #eee;
+        background: #fff;
+        box-shadow: inset 1px 1px 10px 1px #000;
+    }
+    #pager #list{
+    	/* display: none; */
+    }
+    /* #pager>a {
+        border: 1px solid red;
+        padding: 0 1em;
+    }
+
+    #pager>span {
+        border: 1px solid red;
+        padding: 0 1em;
+        background: #DDD;
+    }*/
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <header>
+            <div class="searchContainer">
+                <form action="">
+                    <input type="text" value="" placeholder="请输入查询内容">
+                    <input type="button" value="搜一下">
+                </form>
+            </div>
+            <div class="setting">
+                <div class="index"></div>
+                <div class="setting"></div>
+                <div class="login"></div>
+            </div>
+        </header>
+        <section>
+            <div class="searchResultWrapper">
+                <div class="searchResult">
+                    <h4>博客</h4>
+                    <p>这是一篇非常棒的博客，欢迎大家来看</p>
+                </div>
+                <div class="searchResult">
+                    <h4>博客</h4>
+                    <p>这是一篇非常棒的博客，欢迎大家来看</p>
+                </div>
+                <div class="searchResult">
+                    <h4>博客</h4>
+                    <p>这是一篇非常棒的博客，欢迎大家来看</p>
+                </div>
+                <div class="searchResult">
+                    <h4>博客</h4>
+                    <p>这是一篇非常棒的博客，欢迎大家来看</p>
+                </div>
+                <div class="searchResult">
+                    <h4>博客</h4>
+                    <p>这是一篇非常棒的博客，欢迎大家来看</p>
+                </div>
+                <div class="searchResult">
+                    <h4>博客</h4>
+                    <p>这是一篇非常棒的博客，欢迎大家来看</p>
+                </div>
+                <div class="searchResult">
+                    <h4>博客</h4>
+                    <p>这是一篇非常棒的博客，欢迎大家来看</p>
+                </div>
+                <div class="searchResult">
+                    <h4>博客</h4>
+                    <p>这是一篇非常棒的博客，欢迎大家来看</p>
+                </div>
+                <div class="searchResult">
+                    <h4>博客</h4>
+                    <p>这是一篇非常棒的博客，欢迎大家来看</p>
+                </div>
+                <div class="searchResult">
+                    <h4>博客</h4>
+                    <p>这是一篇非常棒的博客，欢迎大家来看</p>
+                </div>
+            </div>
+        </section>
+        <footer>
+            <input name="pageCount" type="hidden" value='{{pageCount}}'>
+            <input name="page" type="hidden" value='{{page}}'>
+            <div id="pager">
+                <form action="/">
+                    <ul>
+                        <div id="list">{{pageNumbers}}</div>
+                        <li>
+                            <input type="button" value="上一页">
+                        </li>
+                        <li>
+                            <input type="button" value="1">
+                        </li>
+                        <li>
+                            <input type="button" value="2">
+                        </li>
+                        <li>
+                            <input type="button" value="3">
+                        </li>
+                        <li>
+                            <input type="button" value="4">
+                        </li>
+                        <li>
+                            <input type="button" value="5">
+                        </li>
+                        <li>
+                            <input type="button" value="6">
+                        </li>
+                        <li>
+                            <input type="button" value="7">
+                        </li>
+                        <li>
+                            <input type="button" value="8">
+                        </li>
+                        <li>
+                            <input type="button" value="9">
+                        </li>
+                        <li>
+                            <input type="button" value="10">
+                        </li>
+                        <li>
+                            <input type="button" value="下一页">
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </footer>
+    </div>
+    <script type="text/javascript">
+    let pageCount = document.querySelector('[name="pageCount"]').value
+    let page      = document.querySelector('[name="page"]').value
+    let pager     = document.getElementById('pager')
+
+    var searchPage = pager.addEventListener('click', function(e) {
+        let input = e.target
+        let searchPage = input.value
+        let li = input.closest('li')
+        let ul = input.closest('ul')
+        let activeInput = ul.getElementsByClassName('active')[0]
+        console.log('searchPage',searchPage)
+        input.classList.add('active');
+        activeInput.classList.remove('active')
+
+
+        // let xhr = new XMLHttpRequest()
+        // xhr.onload = function() {
+        //     if (xhr.readyState === 4) {
+        //         if (xhr.status === 200) {
+        //             let res = xhr.responseText
+        //             alert(res)
+        //         }
+        //     }
+        // }
+        // xhr.open('GET', '/?page=' + searchPage)
+        // xhr.send()
+    })
+
+    pageCount = +pageCount // 把 pageCount 变成数字
+    page = +page
+    console.log('pageCount',pageCount)
+    console.log('page',page)
+    for (let i = 0; i < pageCount; i++) {
+        let tag
+        if (i + 1 === page) {
+            tag = document.createElement('span')
+        } else {
+            tag = document.createElement('a')
+            tag.href = `?page=${i+1}`
+        }
+        tag.textContent = i + 1
+        pager.appendChild(tag)
+    }
+    </script>
+</body>
+
+</html>
