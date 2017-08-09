@@ -9,14 +9,16 @@ var server = http.createServer(function(request, response){
   var path = temp.pathname
   var query = temp.query
   var method = request.method
-  console.log("query",query)
+  
   if(method === 'GET'){
     if(path === '/'){  
-      var string = fs.readFileSync('./index.html')  
+      var string = fs.readFileSync('./index.html','utf-8')  
       response.setHeader('Content-Type', 'text/html;charset=utf-8')  
 
       let result = ''
       if(query.page === '1' || query.page === undefined){
+        console.log('string',string)
+        
         result = string.replace('{{pageNumbers}}',"1,2,3,4,5,6,7,8,9,10")
       }else if(query.page === '2'){
         result = string.replace('{{pageNumbers}}',"11,12,13,14,15,16,17,18,19,20")
